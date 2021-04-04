@@ -10,14 +10,15 @@ class XylophoneApp extends StatelessWidget {
 
     Expanded playSound(int soundNumber, MaterialColor color) {
       return Expanded(
-        child: Container(
-          color: color,
           child: TextButton(
             onPressed: () {
               cache.play('note$soundNumber.wav');
             },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(color)
+            ),
+            child: null,
           ),
-        ),
       );
     }
 
