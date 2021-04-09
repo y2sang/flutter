@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler_flutter/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'dart:io';
 
 void main() => runApp(Quizzler());
+
+QuizBrain quizBrain = QuizBrain();
 
 class Quizzler extends StatelessWidget {
   @override
@@ -35,16 +40,38 @@ class _QuizPageState extends State<QuizPage> {
     //   color: Colors.red,
     // )
   ];
+  int sumCurrentCount = 0;
 
-  List<bool> answers = [false, true, true];
+  void checkAnswer(bool answer, BuildContext context) {
+    setState(() {
+      if (quizBrain.getAnswer() == answer) {
+        scoreKeeper.add(
+          Icon(Icons.check, color: Colors.green),
+        );
+        sumCurrentCount++;
+      } else {
+        scoreKeeper.add(
+          Icon(Icons.close, color: Colors.red),
+        );
+      }
+      if (quizBrain.isLastQuestion()) {
+        sleep(Duration(seconds: 2));
+        _onBasicAlertPressed(context, sumCurrentCount);
+        scoreKeeper = [];
+        quizBrain.reset();
+        sumCurrentCount = 0;
+      }
+      quizBrain.getNextQuestion();
+    });
+  }
 
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.',
-    'END',
-  ];
-  int currentIndex = 0;
+  _onBasicAlertPressed(context, int sumCurrentCount) {
+    Alert(
+      context: context,
+      title: "Finished!",
+      desc: "Correct answers : $sumCurrentCount",
+    ).show();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +85,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[currentIndex],
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -83,22 +110,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-
-                setState(() {
-                  if (questions.length > currentIndex + 1) {
-                    if (answers[currentIndex]) {
-                      scoreKeeper.add(
-                        Icon(Icons.check, color: Colors.green),
-                      );
-                    } else {
-                      scoreKeeper.add(
-                        Icon(Icons.close, color: Colors.red),
-                      );
-                    }
-
-                    currentIndex++;
-                  }
-                });
+                checkAnswer(true, context);
               },
             ),
           ),
@@ -119,21 +131,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                setState(() {
-                  if (questions.length > currentIndex + 1) {
-                    if (!answers[currentIndex]) {
-                      scoreKeeper.add(
-                        Icon(Icons.check, color: Colors.green),
-                      );
-                    } else {
-                      scoreKeeper.add(
-                        Icon(Icons.close, color: Colors.red),
-                      );
-                    }
-
-                    currentIndex++;
-                  }
-                });
+                checkAnswer(false, context);
               },
             ),
           ),
