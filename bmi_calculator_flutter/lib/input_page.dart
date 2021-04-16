@@ -31,32 +31,27 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      print('Male card was pressed');
+                  child: NewWidget(
+                    onPress: () {
                       setState(() {
                         maleCardColor = activeColor;
                         femaleCardColor = inactiveColor;
                       });
                     },
-                    child: NewWidget(
-                      color: Color(maleCardColor),
-                      cardChild: ColumnWidget(FontAwesomeIcons.mars, 'MALE'),
-                    ),
+                    color: Color(maleCardColor),
+                    cardChild: ColumnWidget(FontAwesomeIcons.mars, 'MALE'),
                   ),
                 ),
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
+                  child: NewWidget(
+                    onPress: () {
                       setState(() {
                         femaleCardColor = activeColor;
                         maleCardColor = inactiveColor;
                       });
                     },
-                    child: NewWidget(
-                      color: Color(femaleCardColor),
-                      cardChild: ColumnWidget(FontAwesomeIcons.venus, 'FEMALE'),
-                    ),
+                    color: Color(femaleCardColor),
+                    cardChild: ColumnWidget(FontAwesomeIcons.venus, 'FEMALE'),
                   ),
                 ),
               ],
