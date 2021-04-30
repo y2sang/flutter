@@ -20,6 +20,24 @@ class _LocationScreenState extends State<LocationScreen> {
   String cityName;
   String message;
 
+  void _onLoading() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              new CircularProgressIndicator(),
+              new Text("Loading"),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -67,8 +85,11 @@ class _LocationScreenState extends State<LocationScreen> {
                 children: <Widget>[
                   TextButton(
                     onPressed: () async {
+                      _onLoading();
                       var weatherData = await weather.getLocationWeather();
                       updateUI(weatherData);
+
+                      Navigator.pop(context);
                     },
                     child: Icon(
                       Icons.near_me,
