@@ -7,7 +7,7 @@ class NetworkHelper {
 
   NetworkHelper(this.url);
 
-  Future<dynamic> getData(Location location) async {
+  Future<dynamic> getData() async {
     var url = Uri.parse(this.url);
     String data;
     var decodedData;
