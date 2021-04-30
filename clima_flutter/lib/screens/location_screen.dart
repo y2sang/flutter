@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clima_flutter/utilities/constants.dart';
 import 'package:clima_flutter/services/weather.dart';
 import 'city_screen.dart';
+import 'test_loading_indicator.dart';
 
 class LocationScreen extends StatefulWidget {
   final locationWeather;
@@ -26,12 +28,16 @@ class _LocationScreenState extends State<LocationScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              new CircularProgressIndicator(),
-              new Text("Loading"),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                Padding(padding: EdgeInsets.all(10)),
+                Text("Loading..."),
+              ],
+            ),
           ),
         );
       },
@@ -96,6 +102,21 @@ class _LocationScreenState extends State<LocationScreen> {
                       size: 50.0,
                     ),
                   ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return TestSignInView();
+                            },
+                          ),
+                        );
+                      },
+                      child: Icon(
+                        Icons.add_to_home_screen_rounded,
+                        size: 50,
+                      )),
                   TextButton(
                     onPressed: () async {
                       var typedName = await Navigator.push(
