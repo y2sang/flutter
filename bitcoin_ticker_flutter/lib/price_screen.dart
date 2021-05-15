@@ -1,3 +1,4 @@
+import 'package:bitcoin_ticker_flutter/service/coin_rates.dart';
 import 'package:flutter/material.dart';
 import 'package:bitcoin_ticker_flutter/coin_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,21 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'USD';
+  String selectedRate = '?';
+  @override
+  void initState() {
+    super.initState();
+    getCoinRatesData();
+  }
+
+  void getCoinRatesData() async {
+    CoinRatesModel coinRatesModel = CoinRatesModel();
+    var data = await coinRatesModel.getCoinRates('BTC', selectedCurrency);
+    // print(data);
+    setState(() {
+      selectedRate = data['rate'].toStringAsFixed(2);
+    });
+  }
 
   DropdownButton<String> androidPicker() {
     List<DropdownMenuItem<String>> dropdownMenuItems = [];
@@ -26,6 +42,7 @@ class _PriceScreenState extends State<PriceScreen> {
       onChanged: (value) {
         setState(() {
           selectedCurrency = value;
+          getCoinRatesData();
         });
       },
     );
@@ -49,11 +66,20 @@ class _PriceScreenState extends State<PriceScreen> {
   Widget getPicker() {
     if (Platform.isIOS) {
       return iOSPicker();
-    } else if (Platform.isAndroid) {
-      return androidPicker();
     } else {
       return androidPicker();
     }
+  }
+
+  Widget setText() {
+    return Text(
+      '1 BTC = $selectedRate $selectedCurrency',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 20.0,
+        color: Colors.white,
+      ),
+    );
   }
 
   @override
@@ -76,14 +102,7 @@ class _PriceScreenState extends State<PriceScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  '1 BTC = ? USD',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                  ),
-                ),
+                child: setText(),
               ),
             ),
           ),
