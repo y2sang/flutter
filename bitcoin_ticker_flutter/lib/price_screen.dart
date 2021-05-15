@@ -15,15 +15,20 @@ class _PriceScreenState extends State<PriceScreen> {
   @override
   void initState() {
     super.initState();
-    getCoinRatesData();
+    updateUI(getCoinRatesData());
   }
 
-  void getCoinRatesData() async {
+  Future<dynamic> getCoinRatesData() async {
     CoinRatesModel coinRatesModel = CoinRatesModel();
     var data = await coinRatesModel.getCoinRates('BTC', selectedCurrency);
     // print(data);
+    return data;
+  }
+
+  void updateUI(dynamic data) async {
+    var rate = await data;
     setState(() {
-      selectedRate = data['rate'].toStringAsFixed(2);
+      selectedRate = rate['rate'].toStringAsFixed(2);
     });
   }
 
@@ -42,7 +47,7 @@ class _PriceScreenState extends State<PriceScreen> {
       onChanged: (value) {
         setState(() {
           selectedCurrency = value;
-          getCoinRatesData();
+          updateUI(getCoinRatesData());
         });
       },
     );
