@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bitcoin_ticker_flutter/coin_data.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -9,7 +11,7 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'USD';
 
-  List<DropdownMenuItem<String>> getItems() {
+  DropdownButton<String> androidPicker() {
     List<DropdownMenuItem<String>> dropdownMenuItems = [];
     for (String str in currenciesList) {
       Widget value = DropdownMenuItem<String>(
@@ -18,7 +20,40 @@ class _PriceScreenState extends State<PriceScreen> {
       );
       dropdownMenuItems.add(value);
     }
-    return dropdownMenuItems;
+    return DropdownButton<String>(
+      value: selectedCurrency,
+      items: dropdownMenuItems,
+      onChanged: (value) {
+        setState(() {
+          selectedCurrency = value;
+        });
+      },
+    );
+  }
+
+  CupertinoPicker iOSPicker() {
+    List<Widget> pickerItems = [];
+    for (String str in currenciesList) {
+      Widget value = Text(str);
+      pickerItems.add(value);
+    }
+    return CupertinoPicker(
+      itemExtent: 32,
+      onSelectedItemChanged: (selectedIndex) {
+        print(selectedIndex);
+      },
+      children: pickerItems,
+    );
+  }
+
+  Widget getPicker() {
+    if (Platform.isIOS) {
+      return iOSPicker();
+    } else if (Platform.isAndroid) {
+      return androidPicker();
+    } else {
+      return androidPicker();
+    }
   }
 
   @override
@@ -57,15 +92,7 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: DropdownButton<String>(
-              value: selectedCurrency,
-              items: getItems(),
-              onChanged: (value) {
-                setState(() {
-                  selectedCurrency = value;
-                });
-              },
-            ),
+            child: getPicker(),
           ),
         ],
       ),
