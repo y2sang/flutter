@@ -1,6 +1,8 @@
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/rounded_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'chat_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = '/login';
@@ -9,6 +11,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance;
+  late String email;
+  late String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
-                //Do something with the user input.
+                this.email = value;
               },
               decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
@@ -43,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
                 obscureText: true,
                 onChanged: (value) {
-                  //Do something with the user input.
+                  this.password = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Enter your password.')),
@@ -51,7 +57,18 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 24.0,
             ),
             RoundedButton(
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  UserCredential user = await _auth.signInWithEmailAndPassword(
+                      email: email, password: password);
+                  print(user);
+                  if (user.user != null) {
+                    Navigator.pushNamed(context, ChatScreen.id);
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              },
               label: 'Log In',
               color: Colors.lightBlueAccent,
             ),
