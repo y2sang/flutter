@@ -27,10 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(
-                  height: 48.0,
-                ),
-                Expanded(
+                Flexible(
                   child: Hero(
                     tag: 'logo',
                     child: Container(
@@ -83,12 +80,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   label: 'Log In',
                   color: Colors.lightBlueAccent,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: SizedBox(
-                    height: 1.0,
-                  ),
                 ),
               ],
             ),
