@@ -11,6 +11,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
+  final _scrollController = ScrollController();
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   User? loggedInUser;
@@ -59,9 +60,8 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                // _auth.signOut();
-                // Navigator.pop(context);
-                getMessagesStream();
+                _auth.signOut();
+                Navigator.pop(context);
               }),
         ],
         title: Text('⚡️Chat'),
@@ -76,13 +76,13 @@ class _ChatScreenState extends State<ChatScreen> {
               stream: _firestore
                   .collection('messages')
                   // .where('sender', isEqualTo: loggedInUser!.email)
-                  .orderBy('creDt', descending: false)
+                  .orderBy('creDt', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Text("Something went wrong!!");
                 }
-
+                print('Am I Wrong?');
                 if (snapshot.hasData) {
                   final messages = snapshot.data!.docs;
                   List<Widget> messageWidgets = [];
@@ -91,18 +91,21 @@ class _ChatScreenState extends State<ChatScreen> {
                     //     snapshot.data!.docs as Map<String, dynamic>;
                     final String messageText = message['text'];
                     final String messageSender = message['sender'];
-                    final msgBble = MessageBubble(
+                    final messageBubble = MessageBubble(
                       sender: messageSender,
                       text: messageText,
                       isLoggedUser: messageSender == loggedInUser!.email,
                     );
-                    messageWidgets.add(msgBble);
+                    messageWidgets.add(messageBubble);
                   }
                   return Expanded(
                     child: ListView(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                        children: messageWidgets),
+                      reverse: true,
+                      controller: _scrollController,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                      children: messageWidgets,
+                    ),
                   );
                 } else {
                   return Text("Loading");
@@ -124,14 +127,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       messageTextController.clear();
                       final currentTime = new DateTime.now();
-                      _firestore.collection('messages').add({
+                      await _firestore.collection('messages').add({
                         'text': messageText,
                         'sender': loggedInUser!.email,
                         'creDt': currentTime
                       });
+                      _scrollController.animateTo(
+                        _scrollController.position.minScrollExtent,
+                        curve: Curves.easeOut,
+                        duration: const Duration(milliseconds: 500),
+                      );
                     },
                     child: Text(
                       'Send',
@@ -160,7 +168,8 @@ class MessageBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment:
+            isLoggedUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             sender,
@@ -169,13 +178,15 @@ class MessageBubble extends StatelessWidget {
           Material(
               borderRadius: BorderRadius.circular(10),
               elevation: 5,
-              color: Colors.lightBlueAccent,
+              color: isLoggedUser ? Colors.lightBlueAccent : Colors.white,
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Text(
                   text,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: TextStyle(
+                      color: isLoggedUser ? Colors.white : Colors.black54,
+                      fontSize: 15),
                 ),
               )),
         ],
