@@ -128,18 +128,22 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   TextButton(
                     onPressed: () async {
-                      messageTextController.clear();
-                      final currentTime = new DateTime.now();
-                      await _firestore.collection('messages').add({
-                        'text': messageText,
-                        'sender': loggedInUser!.email,
-                        'creDt': currentTime
-                      });
-                      _scrollController.animateTo(
-                        _scrollController.position.minScrollExtent,
-                        curve: Curves.easeOut,
-                        duration: const Duration(milliseconds: 500),
-                      );
+                      if (messageText != '') {
+                        messageTextController.clear();
+                        final currentTime = new DateTime.now();
+                        await _firestore.collection('messages').add({
+                          'text': messageText,
+                          'sender': loggedInUser!.email,
+                          'creDt': currentTime
+                        });
+
+                        messageText = '';
+                        _scrollController.animateTo(
+                          _scrollController.position.minScrollExtent,
+                          curve: Curves.easeOut,
+                          duration: const Duration(milliseconds: 500),
+                        );
+                      }
                     },
                     child: Text(
                       'Send',
