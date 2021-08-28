@@ -12,5 +12,5 @@ class AppIcons {
   static const IconData local_shipping = Icons.local_shipping;
   static const IconData watch_later = Icons.watch_later;
   static const IconData exit_to_app_rounded = Icons.exit_to_app_rounded;
-
+  static const IconData calendar_today_outlined = Icons.calendar_today_outlined;
 }

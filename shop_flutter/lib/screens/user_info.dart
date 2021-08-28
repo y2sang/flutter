@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:list_tile_switch/list_tile_switch.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_flutter/constants/app_icons.dart';
+import 'package:shop_flutter/provider/dark_theme.dart';
 
-class UserInfoScreen extends StatelessWidget {
+class UserInfoScreen extends StatefulWidget {
+  @override
+  _UserInfoScreenState createState() => _UserInfoScreenState();
+}
+
+class _UserInfoScreenState extends State<UserInfoScreen> {
+  // bool _value = false;
+  late ScrollController _scrollController;
+  var top = 0.0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -33,9 +56,35 @@ class UserInfoScreen extends StatelessWidget {
             title: 'Shipping Address',
           ),
           UserListTileWidget(
-            icon: AppIcons.exit_to_app_rounded,
+            icon: AppIcons.calendar_today_outlined,
             subTitle: '',
             title: 'Joined Date',
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: userTitle(title: 'User Settings'),
+          ),
+          Divider(
+            thickness: 1,
+            color: Colors.blueGrey,
+          ),
+          ListTileSwitch(
+            value: themeChange.darkTheme,
+            leading: Icon(Icons.nightlight_round),
+            onChanged: (value) {
+              setState(() {
+                themeChange.darkTheme = value;
+              });
+            },
+            visualDensity: VisualDensity.comfortable,
+            switchType: SwitchType.cupertino,
+            switchActiveColor: Colors.indigo,
+            title: Text('Dark Theme'),
+          ),
+          UserListTileWidget(
+            icon: AppIcons.exit_to_app_rounded,
+            subTitle: '',
+            title: 'Logout',
           ),
         ],
       ),
