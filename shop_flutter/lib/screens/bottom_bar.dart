@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shop_flutter/constants/app_icons.dart';
 import 'package:shop_flutter/screens/cart.dart';
 import 'package:shop_flutter/screens/feeds.dart';
 import 'package:shop_flutter/screens/home.dart';
 import 'package:shop_flutter/screens/search.dart';
-import 'package:shop_flutter/screens/user.dart';
+import 'package:shop_flutter/screens/user_info.dart';
 
 class BottomBarScreen extends StatefulWidget {
   static const routeName = '/BottomBarScreen';
@@ -31,7 +32,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       {'page': FeedsScreen(), 'title': 'Feeds screen'},
       {'page': SearchScreen(), 'title': 'Search Screen'},
       {'page': CartScreen(), 'title': 'CartScreen'},
-      {'page': UserScreen(), 'title': 'UserScreen'}
+      {'page': UserInfoScreen(), 'title': 'UserScreen'}
     ];
     super.initState();
   }
@@ -41,8 +42,6 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       _selectedIndex = index;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,23 +59,26 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
         child: Container(
           // height: kBottomNavigationBarHeight * 0.8,
           decoration: BoxDecoration(
-              border: Border(
-            top: BorderSide(width: 0.5),
-          )),
+            border: Border(
+              top: BorderSide(width: 0.5),
+            ),
+          ),
           child: BottomNavigationBar(
             onTap: _selectedPage,
             backgroundColor: Theme.of(context).primaryColor,
             unselectedItemColor: TextSelectionTheme.of(context).selectionColor,
-            selectedItemColor: Colors.purple,
+            selectedItemColor: Colors.deepPurple,
             currentIndex: _selectedIndex,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: Icon(AppIcons.home),
                 tooltip: 'Home',
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.rss_feed),
+                icon: Icon(AppIcons.feeds),
                 tooltip: 'Feeds',
                 label: 'Feeds',
               ),
@@ -87,15 +89,15 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                 //   color: Colors.transparent,
                 // ),
                 tooltip: 'Search',
-                label: 'Search',
+                label: '',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_bag),
+                icon: Icon(AppIcons.cart),
                 tooltip: 'Cart',
                 label: 'Cart',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
+                icon: Icon(AppIcons.user),
                 tooltip: 'User',
                 label: 'User',
               ),
@@ -106,7 +108,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.deepPurple,
         tooltip: 'Search',
         elevation: 5,
         child: (Icon(Icons.search)),
