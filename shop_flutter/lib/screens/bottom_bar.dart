@@ -31,8 +31,8 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       {'page': HomeScreen(), 'title': 'Home Screen'},
       {'page': FeedsScreen(), 'title': 'Feeds screen'},
       {'page': SearchScreen(), 'title': 'Search Screen'},
-      {'page': CartScreen(), 'title': 'CartScreen'},
-      {'page': UserInfoScreen(), 'title': 'UserScreen'}
+      {'page': CartScreen(), 'title': 'Cart Screen'},
+      {'page': UserInfoScreen(), 'title': 'User Screen'}
     ];
     super.initState();
   }
@@ -48,7 +48,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(_pages[0]['title']),
+        title: Text(_pages[_selectedIndex]['title']),
       ),
       body: _pages[_selectedIndex]['page'],
       bottomNavigationBar: BottomAppBar(
