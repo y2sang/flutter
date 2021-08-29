@@ -10,27 +10,22 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  DarkThemeProvider provider = DarkThemeProvider();
-
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) {
-        return provider;
-      })
-    ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
+      ],
       child: Consumer<DarkThemeProvider>(
         builder: (context, themeData, child) {
           return MaterialApp(
             title: 'Flutter Demo',
-            theme: Styles.themeData(provider.darkTheme, context),
+            theme: Styles.themeData(themeData.isDarkTheme, context),
             // home: MyHomePage(title: 'Flutter Demo Home Page'),(
             home: BottomBarScreen(),
           );
         },
-      )
-      ,
+      ),
     );
   }
 }

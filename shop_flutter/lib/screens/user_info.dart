@@ -69,11 +69,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             color: Colors.blueGrey,
           ),
           ListTileSwitch(
-            value: themeChange.darkTheme,
+            value: themeChange.isDarkTheme,
             leading: Icon(Icons.nightlight_round),
-            onChanged: (value) {
+            onChanged: (bool value) {
               setState(() {
-                themeChange.darkTheme = value;
+                themeChange.toggleDarkTheme(value);
               });
             },
             visualDensity: VisualDensity.comfortable,
@@ -119,7 +119,9 @@ class UserListTileWidget extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        splashColor: Theme.of(context).splashColor,
+        splashColor: Theme
+            .of(context)
+            .splashColor,
         child: ListTile(
           title: Text(
             title,
