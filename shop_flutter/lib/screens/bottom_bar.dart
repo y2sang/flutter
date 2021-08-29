@@ -67,7 +67,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
             onTap: _selectedPage,
             backgroundColor: Theme.of(context).primaryColor,
             unselectedItemColor: TextSelectionTheme.of(context).selectionColor,
-            selectedItemColor: Colors.deepPurple,
+            // selectedItemColor: Colors.deepPurple,
             currentIndex: _selectedIndex,
             showUnselectedLabels: true,
             type: BottomNavigationBarType.fixed,
@@ -108,7 +108,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepPurple,
+        // backgroundColor: Colors.deepPurple,
         tooltip: 'Search',
         elevation: 5,
         child: (Icon(Icons.search)),

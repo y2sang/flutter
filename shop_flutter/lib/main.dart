@@ -9,12 +9,30 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  DarkThemeProvider _darkThemeProvider = DarkThemeProvider();
+
+  void getCurrentAppTheme() async {
+    _darkThemeProvider.darkTheme =
+        await _darkThemeProvider.darkThemePreferences.getTheme();
+  }
+
+  @override
+  void initState() {
+    this.getCurrentAppTheme();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
+        ChangeNotifierProvider(create: (_) => _darkThemeProvider),
       ],
       child: Consumer<DarkThemeProvider>(
         builder: (context, themeData, child) {
