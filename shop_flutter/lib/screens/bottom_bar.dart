@@ -51,57 +51,59 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
         title: Text(_pages[_selectedIndex]['title']),
       ),
       body: _pages[_selectedIndex]['page'],
-      bottomNavigationBar: BottomAppBar(
-        notchMargin: 3,
-        clipBehavior: Clip.antiAlias,
-        // elevation: 5,
-        shape: CircularNotchedRectangle(),
-        child: Container(
-          // height: kBottomNavigationBarHeight * 0.8,
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(width: 0.5),
+      bottomNavigationBar: SafeArea(
+        child: BottomAppBar(
+          notchMargin: 3,
+          clipBehavior: Clip.antiAlias,
+          elevation: 0,
+          shape: CircularNotchedRectangle(),
+          child: Container(
+            // height: kBottomNavigationBarHeight * 0.8,
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(width: 0.5),
+              ),
             ),
-          ),
-          child: BottomNavigationBar(
-            onTap: _selectedPage,
-            backgroundColor: Theme.of(context).primaryColor,
-            unselectedItemColor: TextSelectionTheme.of(context).selectionColor,
-            // selectedItemColor: Colors.deepPurple,
-            currentIndex: _selectedIndex,
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(AppIcons.home),
-                tooltip: 'Home',
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(AppIcons.feeds),
-                tooltip: 'Feeds',
-                label: 'Feeds',
-              ),
-              BottomNavigationBarItem(
-                activeIcon: null,
-                icon: Icon(null), // Icon(
-                //   Icons.search,
-                //   color: Colors.transparent,
-                // ),
-                tooltip: 'Search',
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(AppIcons.cart),
-                tooltip: 'Cart',
-                label: 'Cart',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(AppIcons.user),
-                tooltip: 'User',
-                label: 'User',
-              ),
-            ],
+            child: BottomNavigationBar(
+              onTap: _selectedPage,
+              backgroundColor: Theme.of(context).primaryColor,
+              unselectedItemColor: TextSelectionTheme.of(context).selectionColor,
+              // selectedItemColor: Colors.deepPurple,
+              currentIndex: _selectedIndex,
+              showUnselectedLabels: true,
+              type: BottomNavigationBarType.fixed,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(AppIcons.home),
+                  tooltip: 'Home',
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(AppIcons.feeds),
+                  tooltip: 'Feeds',
+                  label: 'Feeds',
+                ),
+                BottomNavigationBarItem(
+                  activeIcon: null,
+                  icon: Icon(null), // Icon(
+                  //   Icons.search,
+                  //   color: Colors.transparent,
+                  // ),
+                  tooltip: 'Search',
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(AppIcons.cart),
+                  tooltip: 'Cart',
+                  label: 'Cart',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(AppIcons.user),
+                  tooltip: 'User',
+                  label: 'User',
+                ),
+              ],
+            ),
           ),
         ),
       ),
