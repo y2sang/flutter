@@ -193,7 +193,7 @@ Open till 7 Pm''',
                             child: Text(
                               "List Of Schedule",
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
+                                  TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           )
                         ],
@@ -227,15 +227,19 @@ Open till 7 Pm''',
                             child: Text(
                               "Doctor's Daily Post",
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
+                                  TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           )
                         ],
                       ),
                     ),
                   ),
+
                 ],
-              )
+              ),
+              SizedBox(
+                height: 22,
+              ),
             ],
           ),
         ),
